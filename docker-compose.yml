@@ -1,0 +1,22 @@
+version: "3"
+services:
+  web-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - ei-mysql
+    depends_on:
+      - ei-db
+
+  ei-db:
+    image: mysql:8
+    networks:
+      - ei-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=vehicles
+networks:
+  ei-mysql:
