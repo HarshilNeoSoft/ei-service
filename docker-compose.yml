@@ -1,4 +1,4 @@
-version: "3"
+version: "3.1"
 services:
   web-service:
     build:
@@ -12,7 +12,7 @@ services:
       - ei-db
 
   ei-db:
-    image: mysql:8
+    image: mysql:5
     networks:
       - ei-mysql
     environment:
