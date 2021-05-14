@@ -22,6 +22,12 @@ public class VehicleController {
         return new ResponseEntity<>("Data saved " + entity.getId(), HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> update(@RequestBody VehicleEntity vehicleEntity, @PathVariable long id) {
+        VehicleEntity entity = vehicleService.update(vehicleEntity, id);
+        return new ResponseEntity<>("Data updated " + entity.getId(), HttpStatus.OK);
+    }
+
     @GetMapping
     public List<VehicleEntity> findAll() {
         return vehicleService.findAll();
@@ -35,5 +41,15 @@ public class VehicleController {
     @GetMapping("/brand/{id}")
     public List<VehicleEntity> findByBrand(@PathVariable long id) {
         return vehicleService.findByBrand(id);
+    }
+
+    @GetMapping("/{id}")
+    public VehicleEntity getVehicleDetails(@PathVariable long id) {
+        return vehicleService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteVehicle(@PathVariable long id) {
+        vehicleService.deleteById(id);
     }
 }

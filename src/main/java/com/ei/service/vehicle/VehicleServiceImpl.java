@@ -37,4 +37,25 @@ public class VehicleServiceImpl implements VehicleService {
     public List<VehicleEntity> findByBrand(long id) {
         return repository.findByVehicleBrand_Id(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public VehicleEntity findById(long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("No data found"));
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public VehicleEntity update(VehicleEntity vehicleEntity, long id) {
+        vehicleEntity.setId(id);
+        return repository.save(vehicleEntity);
+    }
+
+
 }
