@@ -26,4 +26,14 @@ public class VehicleController {
     public List<VehicleEntity> findAll() {
         return vehicleService.findAll();
     }
+
+    @GetMapping("/type/{id}")
+    public List<VehicleEntity> findByType(@PathVariable long id) {
+        return vehicleService.findByType(id);
+    }
+
+    @GetMapping("/brand/{id}")
+    public List<VehicleEntity> findByBrand(@PathVariable long id) {
+        return vehicleService.findByBrand(id);
+    }
 }
