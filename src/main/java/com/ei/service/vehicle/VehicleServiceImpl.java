@@ -4,17 +4,29 @@ import com.ei.entity.VehicleEntity;
 import com.ei.exception.types.InternalException;
 import com.ei.exception.types.NotFoundException;
 import com.ei.repository.VehicleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
+@Slf4j
 public class VehicleServiceImpl implements VehicleService {
 
     @Autowired
     private VehicleRepository repository;
+
+    @Async
+    @Override
+    @Transactional(readOnly = true)
+    public CompletableFuture<List<VehicleEntity>> findAll() {
+        log.info("Find all vehicles");
+        return CompletableFuture.completedFuture(repository.findAll());
+    }
 
     @Override
     @Transactional
@@ -24,12 +36,6 @@ public class VehicleServiceImpl implements VehicleService {
         } catch (RuntimeException e) {
             throw new InternalException(e.getMessage());
         }
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<VehicleEntity> findAll() {
-        return repository.findAll();
     }
 
     @Override

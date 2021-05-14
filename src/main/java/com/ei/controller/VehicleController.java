@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/vehicles")
@@ -29,7 +30,7 @@ public class VehicleController {
     }
 
     @GetMapping
-    public List<VehicleEntity> findAll() {
+    public CompletableFuture<List<VehicleEntity>> findAll() {
         return vehicleService.findAll();
     }
 
