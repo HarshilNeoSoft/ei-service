@@ -1,7 +1,6 @@
 package com.ei.service.vehicle;
 
 import com.ei.entity.VehicleEntity;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

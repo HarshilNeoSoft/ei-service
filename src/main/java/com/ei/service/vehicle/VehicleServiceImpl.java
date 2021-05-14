@@ -1,6 +1,8 @@
 package com.ei.service.vehicle;
 
 import com.ei.entity.VehicleEntity;
+import com.ei.exception.types.InternalException;
+import com.ei.exception.types.NotFoundException;
 import com.ei.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,11 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     @Transactional
     public VehicleEntity save(VehicleEntity entity) {
-        return this.repository.save(entity);
+        try {
+            return this.repository.save(entity);
+        } catch (RuntimeException e) {
+            throw new InternalException(e.getMessage());
+        }
     }
 
     @Override
@@ -41,18 +47,23 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     @Transactional(readOnly = true)
     public VehicleEntity findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("No data found"));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Vehicle not found"));
     }
 
     @Override
     @Transactional
     public void deleteById(long id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (RuntimeException e) {
+            throw new NotFoundException(e.getLocalizedMessage());
+        }
     }
 
     @Override
     @Transactional
     public VehicleEntity update(VehicleEntity vehicleEntity, long id) {
+        findById(id);
         vehicleEntity.setId(id);
         return repository.save(vehicleEntity);
     }
