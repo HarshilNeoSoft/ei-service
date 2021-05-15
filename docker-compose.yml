@@ -1,4 +1,4 @@
-version: "3.1"
+version: "2.1"
 services:
   web-service:
     build:
@@ -10,7 +10,8 @@ services:
     networks:
       - ei-mysql
     depends_on:
-      - ei-db
+      ei-db:
+          condition: service_healthy
 
   ei-db:
     image: mysql:5
@@ -19,5 +20,10 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=vehicles
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 2
+
 networks:
   ei-mysql:
